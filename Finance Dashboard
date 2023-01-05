@@ -1,0 +1,5351 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 9,
+  "iteration": 1672860976133,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 36,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) as \"Total Monthly Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) / day(CURRENT_TIMESTAMP) as \"Average Per Day\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) as \"Total Monthly Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  IF(ISNULL(sum(amount))=1, 0, sum(amount)) / day(CURRENT_TIMESTAMP) as \"Avg. Daily Maint. Cost\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) as \"Total Monthly Net\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\")\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Calendar Month Income",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.3",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    cw.balance, \n    cw.date as time\nfrom\n    corptools_corporationwalletjournalentry cw\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\nwhere cinfo.corporation_id = $Corp4 and cw.division_id = 1\norder BY $__timeGroup(cw.date,'5m')",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Main Wallet Balance",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 82,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.3",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    cw.balance, \n    cw.date as time\nfrom\n    corptools_corporationwalletjournalentry cw\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\nwhere cinfo.corporation_id = $Corp4 and cw.division_id = 6\norder BY $__timeGroup(cw.date,'5m')",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "SRP Wallet Balance",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "id": 73,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) as \"Total Weekly Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  week(date) as time,\r\n  IF(ISNULL(sum(amount))=1, 0, sum(amount)) as \"Weekly Maint. Cost\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) as \"Total Weekly Net\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\"\r\n  OR ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Calendar Week Income",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 6
+      },
+      "id": 81,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  now() as time,\r\n  ref_type,\r\n  sum(amount) as \"Total\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"contract_price\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), month(date), ref_type\r\nORDER BY year(date) DESC, month(date) DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Chart of income",
+      "type": "piechart"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 6
+      },
+      "id": 83,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  now() as time,\r\n  ref_type,\r\n  if(sum(amount) > 0, 0, sum(amount) * -1)  as \"Total\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"contract_price\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), month(date), ref_type\r\nORDER BY year(date) DESC, month(date) DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Chart of Expenses",
+      "type": "piechart"
+    },
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 74,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) as \"Total Day Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), month(date), day(date)\r\nORDER BY year(date) DESC, month(date) DESC, day(date) DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  IF(ISNULL(sum(amount))=1, 0, sum(amount)) as \"Daily Maint. Cost\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), month(date), day(date)\r\nORDER BY year(date) DESC, month(date) DESC, day(date) DESC",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) as \"Total Daily Net\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\"\r\n  OR ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), month(date), day(date)\r\nORDER BY year(date) DESC, month(date) DESC, day(date) DESC",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Calendar Day Income",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 500000000
+              },
+              {
+                "color": "purple",
+                "value": 1000000000
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 2000000000
+              },
+              {
+                "color": "dark-green",
+                "value": 3000000000
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 12
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    cw.balance, \n    cw.date as time\nfrom\n    corptools_corporationwalletjournalentry cw\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\nwhere cinfo.corporation_id = $Corp4\norder BY $__timeGroup(cw.date,'5m')",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Wallet Balance",
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000000000
+              },
+              {
+                "color": "dark-orange",
+                "value": 2000000000
+              },
+              {
+                "color": "super-light-orange",
+                "value": 3000000000
+              },
+              {
+                "color": "semi-dark-blue",
+                "value": 5000000000
+              },
+              {
+                "color": "dark-blue",
+                "value": 7500000000
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 10000000000
+              },
+              {
+                "color": "dark-green",
+                "value": 20000000000
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 12
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    cw.balance, \n    cw.date as time\nfrom\n    corptools_corporationwalletjournalentry cw\njoin corptools_corporationwalletdivision cwd on cw.division_id = 6\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\nwhere cinfo.corporation_id = $Corp4\norder BY $__timeGroup(cw.date,'1m')",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "SRP Wallet Balance",
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 12,
+        "y": 15
+      },
+      "id": 46,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400))*$FuelBlock,\r\n  ss.fuel_expires_at as \"time\"\r\nFROM structures_structureitem si\r\n  INNER JOIN structures_structure ss ON si.structure_id = ss.id\r\nWHERE si.location_flag = \"StructureFuel\"\r\n  AND owner_id = 1\r\n  AND si.eve_type_id != 16273\r\ngroup by time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Fuel Cost per Day",
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 15,
+        "y": 15
+      },
+      "id": 48,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  (SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400))*$FuelBlock)*28,\r\n  ss.fuel_expires_at as \"time\"\r\nFROM structures_structureitem si\r\n  INNER JOIN structures_structure ss ON si.structure_id = ss.id\r\nWHERE si.location_flag = \"StructureFuel\"\r\n  AND owner_id = 1\r\n  AND si.eve_type_id != 16273\r\ngroup by time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Fuel Cost per Month",
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 50000
+              },
+              {
+                "color": "dark-green",
+                "value": 100000
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 18,
+        "y": 15
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400)),\r\n  ss.fuel_expires_at as \"time\"\r\nFROM structures_structureitem si\r\n  INNER JOIN structures_structure ss ON si.structure_id = ss.id\r\nWHERE si.location_flag = \"StructureFuel\"\r\n  AND owner_id = 1\r\n  AND si.eve_type_id != 16273\r\ngroup by time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Fuel Blocks per Day",
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 50000
+              },
+              {
+                "color": "dark-green",
+                "value": 100000
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 20,
+        "y": 15
+      },
+      "id": 57,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400))*7,\r\n  ss.fuel_expires_at as \"time\"\r\nFROM structures_structureitem si\r\n  INNER JOIN structures_structure ss ON si.structure_id = ss.id\r\nWHERE si.location_flag = \"StructureFuel\"\r\n  AND owner_id = 1\r\n  AND si.eve_type_id != 16273\r\ngroup by time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Fuel Blocks per Week",
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-red",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 50000
+              },
+              {
+                "color": "dark-green",
+                "value": 100000
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 22,
+        "y": 15
+      },
+      "id": 47,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400))*30,\r\n  ss.fuel_expires_at as \"time\"\r\nFROM structures_structureitem si\r\n  INNER JOIN structures_structure ss ON si.structure_id = ss.id\r\nWHERE si.location_flag = \"StructureFuel\"\r\n  AND owner_id = 1\r\n  AND si.eve_type_id != 16273\r\ngroup by time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Fuel Blocks per Month",
+      "type": "stat"
+    },
+    {
+      "datasource": "MySQL",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "amount"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "locale"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "balance"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "locale"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "reason"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 50,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "date"
+          }
+        ]
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n    cw.date, cw.amount, cw.description, cw.reason, cw.ref_type, cw.division_id, cw.balance\nfrom\n    corptools_corporationwalletjournalentry cw\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\nwhere $__timeFilter(date) and cinfo.corporation_id = 98660859",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Wallet - Raw",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 259
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Tax Owed"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Ratting Income"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 326
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 59,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Ratting Income\",\r\n  (sum(amount)/0.05)*0.05 as \"Total Monthly Tax Owed\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere cinfo.corporation_id = '98664079'\r\n  AND $__timeFilter(date)\r\n  AND (ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"ess_escrow_transfer\")\r\n  AND year(date) = 2022\r\nGROUP BY year(date), month(date), 1\r\nORDER BY year(date) DESC, month(date) DESC, 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Example Corp Tax To Alliance",
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income Before Sov"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 27
+      },
+      "id": 76,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income Before Sov\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Income Before Sov",
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income After Sov"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 27
+      },
+      "id": 79,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income After Sov\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\"\r\n  OR ref_type = \"infrastructure_hub_maintenance\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Income After Sov",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 26,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 37
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'1d') as time_sec,\r\n  sum(amount) as \"Daily Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date) \r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY 1\r\nORDER BY 1 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Daily Income",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Maintenance Cost"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 37
+      },
+      "id": 69,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) * -1 as \"Total Monthly Maintenance Cost\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND ref_type = \"infrastructure_hub_maintenance\"\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Sov Cost",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 46
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'24h') as time_sec,\r\n  sum(amount),\r\n  ref_type as metric\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date) \r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"reprocessing_tax\")\r\nGROUP BY 1, 3\r\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Reprocessing",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 46
+      },
+      "id": 63,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"reprocessing_tax\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Reprocessing",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 54
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'24h') as \"time\",\r\n  sum(amount) as \"Daily Ratting Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date) \r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"bounty_prizes\" OR ref_type = \"ess_escrow_transfer\")\r\nGROUP BY 1\r\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Ratting",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 54
+      },
+      "id": 64,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Ratting",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 63
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'24h') as time_sec,\r\n  sum(amount) / 2 as total,\r\n  ref_type as metric\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date) \r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"brokers_fee\")\r\nGROUP BY 1, 3\r\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Market",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 63
+      },
+      "id": 65,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"brokers_fee\" OR ref_type = \"market_provider_tax\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Market",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 72
+      },
+      "id": 53,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'24h') as \"time\",\r\n  sum(amount) as \"Total Isk\",\r\n  sum(amount)/count(ref_type) as \"Average Isk per Jump\",\r\n  sum(amount)/500 as \"LO Burnt\",\r\n  count(ref_type) as \"Jumps\",\r\n  (sum(amount)/500)/count(ref_type) as \"Average LO per Jump\"\r\nFROM \r\n  corptools_corporationwalletjournalentry\r\nWHERE\r\n  $__timeFilter(date) AND ref_type = \"structure_gate_jump\"\r\nGROUP BY 1\r\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Jump Gate Fees",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Income"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LO Burnt"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Income Diff."
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Income % Diff."
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 72
+      },
+      "id": 54,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  Year(date) as \"Year\",\r\n  Month(date) as \"Month\",\r\n  sum(amount) as \"Income\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Income Diff.\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"Income % Diff.\",\r\n  count(ref_type) as \"Jumps\",\r\n  ceil(sum(amount)/750) as \"LO Burnt\"\r\nFROM \r\n  corptools_corporationwalletjournalentry\r\nWHERE $__timeFilter(date) and ref_type = \"structure_gate_jump\"\r\nGROUP BY 1, 2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Jump Gate Fees",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 81
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'24h') as time_sec,\r\n  sum(amount),\r\n  ref_type as metric\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date) \r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"industry_job_tax\")\r\nGROUP BY 1, 3\r\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Industry",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 81
+      },
+      "id": 66,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"industry_job_tax\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Industry",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 90
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'1d') as time_sec,\r\n  sum(amount),\r\n  ref_type as metric\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date) \r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" OR ref_type = \"planetary_import_tax\")\r\nGROUP BY 1, 3\r\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Planetary Interaction",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 90
+      },
+      "id": 71,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly PI",
+      "type": "table"
+    },
+    {
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 19,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 99
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__timeGroup(date,'24h') as time_sec,\r\n  sum(amount),\r\n  ref_type as metric\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date) \r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"corporate_reward_payout\")\r\nGROUP BY 1, 3\r\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Incursion",
+      "type": "timeseries"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Monthly Income"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 99
+      },
+      "id": 72,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"corporate_reward_payout\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly Incursion",
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Jan"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "Feb"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Mar"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Apr"
+                      },
+                      "5": {
+                        "index": 4,
+                        "text": "May"
+                      },
+                      "6": {
+                        "index": 5,
+                        "text": "Jun"
+                      },
+                      "7": {
+                        "index": 6,
+                        "text": "Jul"
+                      },
+                      "8": {
+                        "index": 7,
+                        "text": "Aug"
+                      },
+                      "9": {
+                        "index": 8,
+                        "text": "Sep"
+                      },
+                      "10": {
+                        "index": 9,
+                        "text": "Oct"
+                      },
+                      "11": {
+                        "index": 10,
+                        "text": "Nov"
+                      },
+                      "12": {
+                        "index": 11,
+                        "text": "Dec"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Year"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SRP"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Amount Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Difference From Previous"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 107
+      },
+      "id": 70,
+      "links": [],
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  year(post_time) as \"Year\",\r\n  month(post_time) as \"Month\",\r\n  sum(payout_amount) AS \"SRP\",\r\n  (sum(payout_amount) - LAG (sum(payout_amount)) OVER (ORDER BY year(post_time) asc, month(post_time) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(payout_amount) - LAG (sum(payout_amount)) OVER (ORDER BY year(post_time) asc, month(post_time) asc))/ LAG (sum(payout_amount)) OVER (ORDER BY year(post_time) asc, month(post_time) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM aasrp_aasrprequest\r\nWHERE $__timeFilter(post_time)\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Monthly SRP Paid Out",
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 108
+      },
+      "id": 68,
+      "links": [],
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Expiration"
+          }
+        ]
+      },
+      "pluginVersion": "8.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  ss.name as \"Name\",\r\n  SUM(si.quantity) as \"LO Left\"\r\nFROM structures_structureitem si\r\n  INNER JOIN structures_structure ss ON si.structure_id = ss.id\r\nWHERE si.location_flag = \"StructureFuel\"\r\n  AND ss.owner_id = 1\r\n  AND si.eve_type_id = 16273\r\nGROUP BY 1\r\nORDER BY 2 ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "LO In JBs",
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "MySQL",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fuel Left"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 126
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fuel Per Day"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 118
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Days of Fuel Left"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 177
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Expiration"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 23,
+        "w": 12,
+        "x": 0,
+        "y": 116
+      },
+      "id": 41,
+      "links": [],
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Days of Fuel Left"
+          }
+        ]
+      },
+      "pluginVersion": "8.2.2",
+      "repeat": null,
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  ss.name as \"Name\",\r\n  SUM(si.quantity) as \"Fuel Left\",\r\n  SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400)) as \"Fuel Per Day\",\r\n  SUM(si.quantity) / SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400)) as \"Days of Fuel Left\",\r\n  ss.fuel_expires_at as \"Expiration\",\r\n  36 / (SUM(si.quantity) / SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400))) * (SUM(si.quantity / ((UNIX_TIMESTAMP(ss.fuel_expires_at) - UNIX_TIMESTAMP()) / 86400))) + 1296 as \"Fuel needed to be 36 days\"\r\nFROM structures_structureitem si\r\n  INNER JOIN structures_structure ss ON si.structure_id = ss.id\r\nWHERE si.location_flag = \"StructureFuel\"\r\n  AND ss.owner_id = 1\r\n  AND si.eve_type_id != 16273\r\nGROUP BY 5, 1\r\nORDER BY 5 ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aasrp_aasrplink",
+          "timeColumn": "fleet_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Fuel In Structures",
+      "type": "table"
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 31,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "18000",
+          "value": "18000"
+        },
+        "description": "Fuel Block Cost",
+        "error": null,
+        "hide": 0,
+        "label": "Fuel Block",
+        "name": "FuelBlock",
+        "options": [
+          {
+            "selected": true,
+            "text": "18000",
+            "value": "18000"
+          }
+        ],
+        "query": "18000",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "98663301",
+          "value": "98663301"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Corp1",
+        "name": "Corp1",
+        "options": [
+          {
+            "selected": true,
+            "text": "98663301",
+            "value": "98663301"
+          }
+        ],
+        "query": "98663301",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "98000682",
+          "value": "98000682"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Corp2",
+        "name": "Corp2",
+        "options": [
+          {
+            "selected": true,
+            "text": "98000682",
+            "value": "98000682"
+          }
+        ],
+        "query": "98000682",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "98630647",
+          "value": "98630647"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Corp3",
+        "name": "Corp3",
+        "options": [
+          {
+            "selected": true,
+            "text": "98630647",
+            "value": "98630647"
+          }
+        ],
+        "query": "98630647",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "98660859",
+          "value": "98660859"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Main Corp",
+        "name": "Corp4",
+        "options": [
+          {
+            "selected": true,
+            "text": "98660859",
+            "value": "98660859"
+          }
+        ],
+        "query": "98660859",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6M",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false
+  },
+  "timezone": "",
+  "title": "Income",
+  "uid": "E7g6wQF7k",
+  "version": 222
+}

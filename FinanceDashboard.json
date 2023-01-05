@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1672860976134,
+  "iteration": 1672860976137,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2020,7 +2020,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income Before Sov\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
+          "rawSql": "SELECT\r\n  year(date) as \"Year\",\r\n  month(date) as \"Month\",\r\n  sum(amount) as \"Total Monthly Income Before Sov\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc)) AS \"Amount Difference From Previous\",\r\n  (sum(amount) - LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) asc))/ LAG (sum(amount)) OVER (ORDER BY year(date) asc, month(date) ASC) * 100 AS \"% Difference From Previous\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY 1,2\r\nORDER BY 1 DESC, 2 DESC",
           "refId": "A",
           "select": [
             [
@@ -5395,5 +5395,5 @@
   "timezone": "",
   "title": "Income",
   "uid": "E7g6wQF7k",
-  "version": 224
+  "version": 225
 }

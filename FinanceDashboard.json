@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1672860976137,
+  "iteration": 1672860976140,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -162,7 +162,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) / day(CURRENT_TIMESTAMP) as \"Average Per Day\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) / day(CURRENT_TIMESTAMP) as \"Average Income Per Day\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
           "refId": "D",
           "select": [
             [
@@ -191,7 +191,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) as \"Total Monthly Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) as \"Total Monthly Expense\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
           "refId": "B",
           "select": [
             [
@@ -521,7 +521,7 @@
         "x": 0,
         "y": 6
       },
-      "id": 73,
+      "id": 84,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -545,7 +545,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) as \"Total Weekly Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) as \"Total Weekly Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
           "refId": "A",
           "select": [
             [
@@ -569,12 +569,41 @@
           ]
         },
         {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) / 7 as \"Average Income Per Day\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  week(date) as time,\r\n  IF(ISNULL(sum(amount))=1, 0, sum(amount)) as \"Weekly Maint. Cost\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) as \"Total Weekly Expense\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
           "refId": "B",
           "select": [
             [
@@ -598,12 +627,41 @@
           ]
         },
         {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) / 7 as \"Avg. Daily Maint. Cost\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  week(date) as time,\r\n  sum(amount) as \"Total Weekly Net\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\"\r\n  OR ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), week(date)\r\nORDER BY year(date) DESC, week(date) DESC",
+          "rawSql": "SELECT\r\n  month(date) as time,\r\n  sum(amount) as \"Total Weekly Net\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\")\r\nGROUP BY year(date), month(date)\r\nORDER BY year(date) DESC, month(date) DESC",
           "refId": "C",
           "select": [
             [
@@ -629,7 +687,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Calendar Week Income",
+      "title": "Calendar Weekly Income",
       "transformations": [],
       "type": "stat"
     },
@@ -825,7 +883,7 @@
         "x": 0,
         "y": 12
       },
-      "id": 74,
+      "id": 85,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -849,7 +907,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) as \"Total Day Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), month(date), day(date)\r\nORDER BY year(date) DESC, month(date) DESC, day(date) DESC",
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) as \"Total Daily Income\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), day(date)\r\nORDER BY year(date) DESC, day(date) DESC",
           "refId": "A",
           "select": [
             [
@@ -873,12 +931,41 @@
           ]
         },
         {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) / 24 as \"Average Income Per Hour\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND amount > 0\r\n  OR ref_type = \"market_provider_tax\")\r\nGROUP BY year(date), day(date)\r\nORDER BY year(date) DESC, day(date) DESC",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  day(date) as time,\r\n  IF(ISNULL(sum(amount))=1, 0, sum(amount)) as \"Daily Maint. Cost\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), month(date), day(date)\r\nORDER BY year(date) DESC, month(date) DESC, day(date) DESC",
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) as \"Total Daily Expense\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), day(date)\r\nORDER BY year(date) DESC, day(date) DESC",
           "refId": "B",
           "select": [
             [
@@ -902,12 +989,41 @@
           ]
         },
         {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) / 24 as \"Avg. Hourly Maint. Cost\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\"\r\n  AND ref_type != \"market_provider_tax\"\r\n  AND amount < 0)\r\nGROUP BY year(date), day(date)\r\nORDER BY year(date) DESC, day(date) DESC",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "aa_bulletin_board_bulletin",
+          "timeColumn": "created_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) as \"Total Daily Net\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type = \"planetary_export_tax\" \r\n  OR ref_type = \"planetary_import_tax\"\r\n  OR ref_type = \"reprocessing_tax\"\r\n  OR ref_type = \"industry_job_tax\"\r\n  OR ref_type = \"brokers_fee\"\r\n  OR ref_type = \"ess_escrow_transfer\"\r\n  OR ref_type = \"bounty_prizes\"\r\n  OR ref_type = \"corporate_reward_payout\"\r\n  OR ref_type = \"structure_gate_jump\"\r\n  OR ref_type = \"jump_clone_installation_fee\"\r\n  OR ref_type = \"market_provider_tax\"\r\n  OR ref_type = \"infrastructure_hub_maintenance\"\r\n  OR ref_type = \"alliance_maintainance_fee\"\r\n  OR ref_type = \"office_rental_fee\"\r\n  OR ref_type = \"advertisement_listing_fee\")\r\nGROUP BY year(date), month(date), day(date)\r\nORDER BY year(date) DESC, month(date) DESC, day(date) DESC",
+          "rawSql": "SELECT\r\n  day(date) as time,\r\n  sum(amount) as \"Total Daily Net\"\r\nFROM \r\n  corptools_corporationwalletjournalentry cw\r\njoin corptools_corporationwalletdivision cwd on cw.division_id = cwd.id\r\njoin corptools_corporationaudit caudit on cwd.corporation_id = caudit.id\r\njoin eveonline_evecorporationinfo cinfo on caudit.corporation_id = cinfo.id\r\nwhere $__timeFilter(date)\r\n  AND (cinfo.corporation_id = $Corp1\r\n  OR cinfo.corporation_id = $Corp2\r\n  OR cinfo.corporation_id = $Corp3\r\n  OR cinfo.corporation_id = $Corp4)\r\n  AND (ref_type != \"player_donation\" \r\n  AND ref_type != \"corporation_account_withdrawal\")\r\nGROUP BY year(date), day(date)\r\nORDER BY year(date) DESC, day(date) DESC",
           "refId": "C",
           "select": [
             [
@@ -933,7 +1049,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Calendar Day Income",
+      "title": "Calendar Daily Income",
       "transformations": [],
       "type": "stat"
     },
@@ -5227,7 +5343,7 @@
         "sortBy": [
           {
             "desc": false,
-            "displayName": "Days of Fuel Left"
+            "displayName": "Fuel needed to be 36 days"
           }
         ]
       },
@@ -5395,5 +5511,5 @@
   "timezone": "",
   "title": "Income",
   "uid": "E7g6wQF7k",
-  "version": 225
+  "version": 228
 }
